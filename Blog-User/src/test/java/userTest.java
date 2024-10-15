@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @Slf4j
 public class userTest {
 
-    private static final Logger log = LoggerFactory.getLogger(userTest.class);
     @Autowired
    // testservice ts;
     @Test
