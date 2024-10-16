@@ -8,7 +8,6 @@ import com.sprve.domain.entity.Category;
 import com.sprve.domain.vo.CategoryVo;
 import com.sprve.mapper.ArticleMapper;
 import com.sprve.mapper.CategoryMapper;
-import com.sprve.service.ArticleService;
 import com.sprve.service.CategoryService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
