@@ -18,6 +18,7 @@ import java.util.Date;
 @Accessors(chain = true)
 @TableName("sg_article")
 public class Article implements Serializable {
+    //Id
     @TableId
     private  Long id;
     //标题
@@ -28,7 +29,7 @@ public class Article implements Serializable {
     private String summary;
     //所属分类id
     private Long categoryId;
-
+    //分类名(默认不存在文章表中)
     @TableField(exist = false)
     private  String categoryName;
     //缩略图

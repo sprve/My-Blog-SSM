@@ -30,6 +30,7 @@
         <mybatis.plus.version>3.5.7</mybatis.plus.version>
         <druid.version>1.2.23</druid.version>
         <hutool.version>5.8.32</hutool.version>
+        <fastjson2.version>2.0.53</fastjson2.version>
         <springdoc.version>2.6.0</springdoc.version>
         <util.version>1.0</util.version>
     </properties>
@@ -65,6 +66,18 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-extra</artifactId>
                 <version>${hutool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson2.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2-extension-spring6</artifactId>
+                <version>${fastjson2.version}</version>
             </dependency>
 
             <dependency>

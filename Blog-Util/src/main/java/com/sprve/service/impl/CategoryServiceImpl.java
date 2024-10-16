@@ -24,17 +24,19 @@ import static com.sprve.domain.constants.SystemConstants.CATEGORY_STATUS_NORMAL;
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> implements  CategoryService {
 
     @Resource
-    ArticleService articleService;
+    ArticleMapper articleMapper;
 
     @Override
     public List<CategoryVo> getCategoryList() {
-        LambdaQueryWrapper<Article> queryWrapper= new LambdaQueryWrapper<>();
-        queryWrapper.eq(Article::getStatus,ARTICLE_STATUS_NORMAL);
-        List<Article> articleList= articleService.list(queryWrapper);
+        //根据链式调用取得分类Id数据集合
+        LambdaQueryWrapper<Article> articleLambdaQueryWrapper= new LambdaQueryWrapper<>();
+        articleLambdaQueryWrapper.eq(Article::getStatus,ARTICLE_STATUS_NORMAL);
+        List<Article> articleList= articleMapper.selectList(articleLambdaQueryWrapper);
         Set<Long> categorieByIdSet = articleList
                 .stream()
                 .map(article -> article.getCategoryId())
                 .collect(Collectors.toSet());
+        //根据分类Id集合取得分类表的正常数据
         List<Category> categoryList = listByIds(categorieByIdSet);
         categoryList
                 .stream()

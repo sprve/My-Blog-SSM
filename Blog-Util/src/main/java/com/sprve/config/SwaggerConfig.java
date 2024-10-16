@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
 
+    //Swagger Api接口文档配置
     private Info info(){
         return new Info()
                 .title("Sprve API")

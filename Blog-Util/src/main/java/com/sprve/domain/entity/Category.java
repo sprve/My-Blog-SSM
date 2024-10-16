@@ -14,6 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @TableName("sg_category")
 public class Category implements Serializable {
+    //Id
     @TableId
     private  Long id;
     //分类名
