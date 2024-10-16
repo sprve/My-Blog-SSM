@@ -23,8 +23,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         queryWrapper.orderByDesc(Article::getViewCount);
         Page<Article> page = new Page<>(1,10);
         page(page,queryWrapper);
-        List<Article> articles = page.getRecords();
-        List<HotArticleVo> hotArticleVos = BeanUtil.copyToList(articles,HotArticleVo.class);
-        return hotArticleVos;
+        List<Article> articleList = page.getRecords();
+        List<HotArticleVo> hotArticleVoList = BeanUtil.copyToList(articleList,HotArticleVo.class);
+        return hotArticleVoList;
     }
 }
