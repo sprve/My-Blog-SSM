@@ -28,6 +28,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <mybatis.plus.version>3.5.7</mybatis.plus.version>
+        <mybatis.plus.join.version>1.5.1</mybatis.plus.join.version>
         <druid.version>1.2.23</druid.version>
         <hutool.version>5.8.32</hutool.version>
         <fastjson2.version>2.0.53</fastjson2.version>
@@ -48,6 +49,12 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis.plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.yulichang</groupId>
+                <artifactId>mybatis-plus-join-boot-starter</artifactId>
+                <version>${mybatis.plus.join.version}</version>
             </dependency>
 
             <dependency>
