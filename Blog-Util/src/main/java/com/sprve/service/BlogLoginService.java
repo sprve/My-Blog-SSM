@@ -1,7 +1,8 @@
 package com.sprve.service;
 
 import com.sprve.domain.entity.User;
+import com.sprve.domain.vo.BlogUserLoginVo;
 
 public interface BlogLoginService {
-    public abstract Object login(User user);
+    public abstract BlogUserLoginVo login(User user);
 }

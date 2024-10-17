@@ -1,5 +1,6 @@
 package com.sprve.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.github.yulichang.query.MPJLambdaQueryWrapper;
 import com.sprve.domain.entity.LoginUser;
 import com.sprve.domain.entity.User;
@@ -20,9 +21,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        MPJLambdaQueryWrapper<User> userMPJLambdaQueryWrapper = new MPJLambdaQueryWrapper<>();
-        userMPJLambdaQueryWrapper.eq(User::getUserName,username);
-        User user =userMapper.selectOne(userMPJLambdaQueryWrapper);
+        LambdaQueryWrapper<User> userLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        userLambdaQueryWrapper.eq(User::getUserName,username);
+        User user =userMapper.selectOne(userLambdaQueryWrapper);
         if(Objects.isNull(user))
             throw new RuntimeException("用户不存在");
         LoginUser loginUser = new LoginUser();

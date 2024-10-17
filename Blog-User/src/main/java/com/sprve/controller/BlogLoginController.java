@@ -1,6 +1,7 @@
 package com.sprve.controller;
 
 import com.sprve.domain.entity.User;
+import com.sprve.domain.vo.BlogUserLoginVo;
 import com.sprve.response.ResponseResult;
 import com.sprve.service.BlogLoginService;
 import jakarta.annotation.Resource;
@@ -16,7 +17,7 @@ public class BlogLoginController {
 
     @PostMapping("/login")
     public ResponseResult login(@RequestBody User user){
-        Object data = blogLoginService.login(user);
+        BlogUserLoginVo data = blogLoginService.login(user);
         return ResponseResult.okResult(data);
     }
 }

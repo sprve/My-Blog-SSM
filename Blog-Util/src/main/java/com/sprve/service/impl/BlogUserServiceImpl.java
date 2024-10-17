@@ -1,8 +1,12 @@
 package com.sprve.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.sprve.Util.JwtUtil;
+import com.sprve.Util.RedisUtil;
 import com.sprve.domain.entity.LoginUser;
 import com.sprve.domain.entity.User;
+import com.sprve.domain.vo.BlogUserLoginVo;
+import com.sprve.domain.vo.UserInfoVo;
 import com.sprve.service.BlogLoginService;
 import jakarta.annotation.Resource;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,8 +22,11 @@ public class BlogUserServiceImpl implements BlogLoginService {
     @Resource
     private AuthenticationManager authenticationManager;
 
+    @Resource
+    private RedisUtil redisUtil;
+
     @Override
-    public Object login(User user) {
+    public BlogUserLoginVo login(User user) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =new UsernamePasswordAuthenticationToken(user.getUserName(),user.getPassword());
         Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         if(Objects.isNull(authenticate))
@@ -27,8 +34,15 @@ public class BlogUserServiceImpl implements BlogLoginService {
         LoginUser loginUser =(LoginUser)authenticate.getPrincipal();
         String userId = loginUser.getUser().getId().toString();
 
-        JwtUtil.createToken("userID",userId);
+        String token = JwtUtil.createToken("userID",userId);
+        redisUtil.setCacheObject("bloglogin"+userId,loginUser);
+        redisUtil.expire("bloglogin"+userId,600);
 
-        return null;
+        UserInfoVo userInfoVo = new UserInfoVo();
+        BeanUtil.copyProperties(loginUser.getUser(),userInfoVo);
+
+        BlogUserLoginVo blogUserLoginVo = new BlogUserLoginVo(token,userInfoVo);
+
+        return blogUserLoginVo;
     }
 }
