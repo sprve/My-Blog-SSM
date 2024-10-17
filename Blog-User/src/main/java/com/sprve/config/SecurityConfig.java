@@ -1,5 +1,6 @@
 package com.sprve.config;
 
+import com.sprve.fliter.JwtAuthenticationTokenFilter;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,10 +13,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig  {
+
+    @Resource
+    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
 
     @Resource
     private AuthenticationConfiguration authenticationConfiguration;
@@ -35,8 +40,9 @@ public class SecurityConfig  {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login").anonymous()
+                        .requestMatchers("/link/getAllLink").authenticated()
                         .anyRequest().permitAll())
-
+                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
