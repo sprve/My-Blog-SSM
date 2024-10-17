@@ -23,7 +23,7 @@ import static com.sprve.domain.constants.SystemConstants.CATEGORY_STATUS_NORMAL;
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> implements  CategoryService {
 
     @Resource
-    ArticleMapper articleMapper;
+    private ArticleMapper articleMapper;
 
     @Override
     public List<CategoryVo> getCategoryList() {

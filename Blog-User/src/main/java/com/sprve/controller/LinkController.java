@@ -15,7 +15,7 @@ import java.util.List;
 public class LinkController {
 
     @Resource
-    LinkService linkService;
+    private LinkService linkService;
 
     @GetMapping("/getAllLink")
     public ResponseResult getAllLink(){
