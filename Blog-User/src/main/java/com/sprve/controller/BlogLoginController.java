@@ -20,4 +20,10 @@ public class BlogLoginController {
         BlogUserLoginVo data = blogLoginService.login(user);
         return ResponseResult.okResult(data);
     }
+
+    @PostMapping("/logout")
+    public ResponseResult logout(){
+        blogLoginService.logout();
+        return ResponseResult.okResult();
+    }
 }
