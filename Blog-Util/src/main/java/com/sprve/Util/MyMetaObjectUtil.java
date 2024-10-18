@@ -13,9 +13,8 @@ public class MyMetaObjectUtil implements MetaObjectHandler {
 
     @Override
     public void insertFill(MetaObject metaObject) {
-        Long userId = null;
         LoginUser loginUser=(LoginUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        userId=loginUser.getUser().getId();
+        Long userId=loginUser.getUser().getId();
         this.setFieldValByName("createTime", new Date(), metaObject);
         this.setFieldValByName("createBy",userId , metaObject);
         this.setFieldValByName("updateTime", new Date(), metaObject);
@@ -24,10 +23,9 @@ public class MyMetaObjectUtil implements MetaObjectHandler {
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        Long userId = null;
         LoginUser loginUser=(LoginUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        userId=loginUser.getUser().getId();
+        Long userId=loginUser.getUser().getId();
         this.setFieldValByName("updateTime", new Date(), metaObject);
-        this.setFieldValByName("updateBy", userId, metaObject);
+        this.setFieldValByName("updateBy",userId , metaObject);
     }
 }

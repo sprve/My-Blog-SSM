@@ -8,6 +8,7 @@ import com.sprve.domain.entity.LoginUser;
 import com.sprve.domain.entity.User;
 import com.sprve.domain.vo.BlogUserLoginVo;
 import com.sprve.domain.vo.UserInfoVo;
+import com.sprve.exception.SystemException;
 import com.sprve.service.BlogLoginService;
 import jakarta.annotation.Resource;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +16,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import static com.sprve.response.CodeEnum.LOGIN_ERROR;
 
 @Service
 public class BlogUserServiceImpl implements BlogLoginService {
@@ -30,7 +33,7 @@ public class BlogUserServiceImpl implements BlogLoginService {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =new UsernamePasswordAuthenticationToken(user.getUserName(),user.getPassword());
         Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         if(ObjectUtil.isEmpty(authenticate))
-            throw  new RuntimeException("用户名或密码错误");
+            throw  new SystemException(LOGIN_ERROR);
         LoginUser loginUser =(LoginUser)authenticate.getPrincipal();
         String userId = loginUser.getUser().getId().toString();
 

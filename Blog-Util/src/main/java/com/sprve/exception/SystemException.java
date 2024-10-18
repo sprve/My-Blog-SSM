@@ -2,7 +2,7 @@ package com.sprve.exception;
 
 import com.sprve.response.CodeEnum;
 
-public class SystemException extends  RuntimeException{
+public class SystemException extends RuntimeException{
 
     private int code;
     private String msg;

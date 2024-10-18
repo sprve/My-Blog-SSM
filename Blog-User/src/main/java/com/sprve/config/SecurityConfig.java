@@ -55,6 +55,8 @@ public class SecurityConfig  {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login").anonymous()
                         .requestMatchers("/logout").authenticated()
+
+                        .requestMatchers("/comment").authenticated()
                         .anyRequest().permitAll())
 
                 //自定义过滤器

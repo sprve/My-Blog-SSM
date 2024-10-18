@@ -4,12 +4,15 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.sprve.domain.entity.LoginUser;
 import com.sprve.domain.entity.User;
+import com.sprve.exception.SystemException;
 import com.sprve.mapper.UserMapper;
 import jakarta.annotation.Resource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import static com.sprve.response.CodeEnum.LOGIN_ERROR;
 
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
@@ -23,7 +26,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         userLambdaQueryWrapper.eq(User::getUserName,username);
         User user =userMapper.selectOne(userLambdaQueryWrapper);
         if(ObjectUtil.isEmpty(user))
-            throw new RuntimeException("用户不存在");
+            throw new SystemException(LOGIN_ERROR);
         LoginUser loginUser = new LoginUser();
         loginUser.setUser(user);
         return loginUser;

@@ -1,6 +1,7 @@
 package com.sprve.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -40,7 +41,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public PageVo articleList(Long categoryId,Integer pageNum,Integer pageSize) {
         //根据规则分页查询文章表的数据
         LambdaQueryWrapper<Article> articleLambdaQueryWrapper = new LambdaQueryWrapper();
-        if (categoryId !=null){
+        if (ObjectUtil.isEmpty(categoryId)){
             articleLambdaQueryWrapper.eq(Article::getCategoryId,categoryId);
         }
         articleLambdaQueryWrapper.eq(Article::getStatus,ARTICLE_STATUS_NORMAL);
