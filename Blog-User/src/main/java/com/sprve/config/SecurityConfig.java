@@ -57,6 +57,7 @@ public class SecurityConfig  {
                         .requestMatchers("/logout").authenticated()
 
                         .requestMatchers("/comment").authenticated()
+                        .requestMatchers("/user/userInfo").authenticated()
                         .anyRequest().permitAll())
 
                 //自定义过滤器

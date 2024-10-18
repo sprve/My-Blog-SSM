@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import static com.sprve.domain.constants.SystemConstants.COMMENT_ARTICLE;
+import static com.sprve.domain.constants.SystemConstants.COMMENT_LINK;
 
 @Slf4j
 @RestController
@@ -30,5 +31,12 @@ public class CommentController {
     public ResponseResult addComment(@RequestBody Comment comment){
         commentService.addComment(comment);
         return ResponseResult.okResult();
+    }
+
+    @GetMapping("/linkCommentList")
+    public ResponseResult linkCommentList(@RequestParam(defaultValue = "1") Integer pageNum,
+                                          @RequestParam(defaultValue = "10") Integer pageSize){
+        PageVo data = commentService.commentList(COMMENT_LINK,null,pageNum,pageSize);
+        return ResponseResult.okResult(data);
     }
 }

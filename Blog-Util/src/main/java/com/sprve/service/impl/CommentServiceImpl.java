@@ -28,7 +28,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     public PageVo commentList(String commentType,Long articleId, Integer pageNum, Integer pageSize) {
         LambdaQueryWrapper<Comment> commentLambdaQueryWrapper = new LambdaQueryWrapper<>();
         commentLambdaQueryWrapper
-                .eq(Comment::getArticleId,articleId)
+                .eq(!ObjectUtil.isEmpty(articleId),Comment::getArticleId,articleId)
                 .eq(Comment::getType,commentType)
                 .eq(Comment::getRootId,-1);
         Page<Comment> page = new Page<>(pageNum,pageSize);
