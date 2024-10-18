@@ -1,6 +1,7 @@
 package com.sprve.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.sprve.Util.JwtUtil;
 import com.sprve.Util.RedisUtil;
 import com.sprve.domain.entity.LoginUser;
@@ -13,8 +14,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Service
 public class BlogUserServiceImpl implements BlogLoginService {
@@ -29,12 +28,12 @@ public class BlogUserServiceImpl implements BlogLoginService {
     public BlogUserLoginVo login(User user) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =new UsernamePasswordAuthenticationToken(user.getUserName(),user.getPassword());
         Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-        if(Objects.isNull(authenticate))
+        if(ObjectUtil.isEmpty(authenticate))
             throw  new RuntimeException("用户名或密码错误");
         LoginUser loginUser =(LoginUser)authenticate.getPrincipal();
         String userId = loginUser.getUser().getId().toString();
 
-        String token = JwtUtil.createToken("userID",userId);
+        String token = JwtUtil.createToken("userId",userId);
         redisUtil.setCacheObject("bloglogin"+userId,loginUser);
         redisUtil.expire("bloglogin"+userId,600);
 

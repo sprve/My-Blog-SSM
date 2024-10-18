@@ -1,6 +1,6 @@
 package com.sprve.config;
 
-import com.alibaba.fastjson2.support.spring6.data.redis.FastJsonRedisSerializer;
+import com.sprve.Util.FastJson2RedisSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -16,7 +16,7 @@ public class RedisConfig {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
 
-        FastJsonRedisSerializer serializer = new FastJsonRedisSerializer(Object.class);
+        FastJson2RedisSerializer serializer = new FastJson2RedisSerializer(Object.class);
 
         // 使用StringRedisSerializer来序列化和反序列化redis的key值
         template.setKeySerializer(new StringRedisSerializer());

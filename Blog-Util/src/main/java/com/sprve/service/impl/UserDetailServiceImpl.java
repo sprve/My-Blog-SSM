@@ -1,7 +1,7 @@
 package com.sprve.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.github.yulichang.query.MPJLambdaQueryWrapper;
 import com.sprve.domain.entity.LoginUser;
 import com.sprve.domain.entity.User;
 import com.sprve.mapper.UserMapper;
@@ -10,8 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
@@ -24,7 +22,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         LambdaQueryWrapper<User> userLambdaQueryWrapper = new LambdaQueryWrapper<>();
         userLambdaQueryWrapper.eq(User::getUserName,username);
         User user =userMapper.selectOne(userLambdaQueryWrapper);
-        if(Objects.isNull(user))
+        if(ObjectUtil.isEmpty(user))
             throw new RuntimeException("用户不存在");
         LoginUser loginUser = new LoginUser();
         loginUser.setUser(user);
