@@ -16,8 +16,8 @@ public class UploadController {
     UploadService uploadService;
 
     @PostMapping("/upload")
-    public ResponseResult upload(MultipartFile multipartFile){
-        String data=uploadService.uploadImg(multipartFile);
+    public ResponseResult upload(MultipartFile img){
+        String data=uploadService.uploadImg(img);
         return  ResponseResult.okResult(data);
     }
 }

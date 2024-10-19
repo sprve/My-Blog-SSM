@@ -58,6 +58,7 @@ public class SecurityConfig  {
 
                         .requestMatchers("/comment").authenticated()
                         .requestMatchers("/user/userInfo").authenticated()
+                        .requestMatchers("/upload").authenticated()
                         .anyRequest().permitAll())
 
                 //自定义过滤器
