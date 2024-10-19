@@ -6,4 +6,8 @@ import com.sprve.domain.vo.UserInfoVo;
 
 public interface UserService extends IService<User> {
     UserInfoVo userInfo();
+
+    void updateUserInfo(User user);
+
+    void register(User user);
 }

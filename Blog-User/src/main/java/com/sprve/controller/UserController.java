@@ -1,13 +1,12 @@
 package com.sprve.controller;
 
+import com.sprve.domain.entity.User;
 import com.sprve.domain.vo.UserInfoVo;
 import com.sprve.response.ResponseResult;
 import com.sprve.service.UserService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -21,5 +20,17 @@ public class UserController {
     public ResponseResult userInfo(){
         UserInfoVo data =userService.userInfo();
         return ResponseResult.okResult(data);
+    }
+
+    @PutMapping("/userInfo")
+    public ResponseResult updateUserInfo(@RequestBody User user){
+        userService.updateUserInfo(user);
+        return ResponseResult.okResult();
+    }
+
+    @PostMapping("/register")
+    public ResponseResult register(@RequestBody User user){
+        userService.register(user);
+        return  ResponseResult.okResult();
     }
 }
