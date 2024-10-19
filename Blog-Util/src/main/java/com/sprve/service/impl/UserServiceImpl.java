@@ -58,7 +58,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new SystemException(CodeEnum.NICKNAME_NOT_NULL);
         }
         //对数据进行是否存在的判断
-        if(userNameExist(user)){
+        if(!userNameExist(user)){
             throw new SystemException(CodeEnum.USERNAME_EXIST);
         }
         //对密码进行加密
@@ -68,13 +68,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         save(user);
     }
     private boolean userNameExist(User user){
-        List<User> userList= list();
-        for(User originUser : userList){
-            if(originUser.getUserName().equals(user.getUserName()))
-                return true;
-            if(originUser.getNickName().equals(user.getNickName()))
-                return true;
-        }
-        return false;
+        LambdaQueryWrapper<User> userLambdaQueryWrapper =new LambdaQueryWrapper<>();
+        userLambdaQueryWrapper
+                .eq(User::getUserName,user.getUserName())
+                .or()
+                .eq(User::getNickName,user.getNickName());
+        User originUser = getOne(userLambdaQueryWrapper);
+        return ObjectUtil.isEmpty(originUser);
     }
 }
