@@ -5,10 +5,8 @@ import com.sprve.domain.vo.UserInfoVo;
 import com.sprve.response.ResponseResult;
 import com.sprve.service.UserService;
 import jakarta.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {

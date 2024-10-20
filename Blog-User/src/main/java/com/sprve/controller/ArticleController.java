@@ -6,12 +6,10 @@ import com.sprve.domain.vo.PageVo;
 import com.sprve.response.ResponseResult;
 import com.sprve.service.ArticleService;
 import jakarta.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequestMapping("/article")
 public class ArticleController {

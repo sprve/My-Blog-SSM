@@ -5,13 +5,11 @@ import com.sprve.domain.vo.PageVo;
 import com.sprve.response.ResponseResult;
 import com.sprve.service.CommentService;
 import jakarta.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import static com.sprve.domain.constants.SystemConstants.COMMENT_ARTICLE;
 import static com.sprve.domain.constants.SystemConstants.COMMENT_LINK;
 
-@Slf4j
 @RestController
 @RequestMapping("/comment")
 public class CommentController {
