@@ -37,4 +37,15 @@ public class ArticleController {
         return  ResponseResult.okResult(data);
     }
 
+    @PutMapping("/updateViewCount/{id}")
+    public ResponseResult updateViewCount(@PathVariable Long id){
+        articleService.updateViewCount(id);
+        return ResponseResult.okResult();
+    }
+
+    @PutMapping("/updateViewCountList")
+    public ResponseResult updateViewCount(){
+        articleService.updateViewCountList();
+        return ResponseResult.okResult();
+    }
 }

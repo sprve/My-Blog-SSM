@@ -12,4 +12,8 @@ public interface ArticleService extends IService<Article> {
     public abstract List<HotArticleVo> hotArticleList();
     public abstract PageVo articleList(Long categoryId, Integer pageNum, Integer pageSize);
     public abstract ArticleDetailVo getArticleDetail(Long id);
+
+    void updateViewCount(Long id);
+
+    void updateViewCountList();
 }

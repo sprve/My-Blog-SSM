@@ -3,8 +3,10 @@ package com.sprve.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sprve.Util.RedisUtil;
 import com.sprve.domain.entity.Article;
 import com.sprve.domain.entity.Category;
 import com.sprve.domain.vo.*;
@@ -15,6 +17,8 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.sprve.domain.constants.SystemConstants.ARTICLE_STATUS_NORMAL;
 
@@ -23,6 +27,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Resource
     private CategoryMapper categoryMapper;
+
+    @Resource
+    private RedisUtil redisUtil;
 
     @Override
     public List<HotArticleVo> hotArticleList() {
@@ -63,9 +70,35 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public ArticleDetailVo getArticleDetail(Long id) {
         Article article = getById(id);
+        Integer viewCount = redisUtil.getCacheMapValue("article:viewCount", article.getId().toString());
+        article.setViewCount(viewCount.longValue());
         ArticleDetailVo articleDetailVo = new ArticleDetailVo();
         BeanUtil.copyProperties(article,articleDetailVo);
         articleDetailVo.setCategoryName(categoryMapper.selectById(articleDetailVo.getCategoryId()).getName());
         return  articleDetailVo;
+    }
+
+    @Override
+    public void updateViewCount(Long id) {
+        Integer viewCount = redisUtil.getCacheMapValue("article:viewCount", id.toString());
+        redisUtil.setCacheMapValue("article:viewCount", id.toString(),viewCount+1);
+    }
+
+    @Override
+    public void updateViewCountList() {
+
+        Map<String,Integer> viewCountMap=redisUtil.getCacheMap("article:viewCount");
+        List<Article> articleList = viewCountMap.entrySet().stream().map(entry -> {
+            Article article = new Article();
+            article.setId(Long.valueOf(entry.getKey()));
+            article.setViewCount(Long.valueOf(entry.getValue()));
+            return article;
+        }).collect(Collectors.toList());
+        for(Article article : articleList){
+            LambdaUpdateWrapper<Article> articleLambdaUpdateWrapper =new LambdaUpdateWrapper<>();
+            articleLambdaUpdateWrapper.set(Article::getViewCount,article.getViewCount());
+            articleLambdaUpdateWrapper.eq(Article::getId,article.getId());
+            update(articleLambdaUpdateWrapper);
+        }
     }
 }
