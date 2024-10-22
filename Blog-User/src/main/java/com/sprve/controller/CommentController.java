@@ -18,10 +18,10 @@ public class CommentController {
     CommentService commentService;
 
     @GetMapping("/commentList")
-    public ResponseResult commentList(@RequestParam Long id,
+    public ResponseResult commentList(@RequestParam Long articleId,
                                       @RequestParam(defaultValue = "1") Integer pageNum,
                                       @RequestParam(defaultValue = "10") Integer pageSize){
-        PageVo data =commentService.commentList(COMMENT_ARTICLE,id,pageNum,pageSize);
+        PageVo data =commentService.commentList(COMMENT_ARTICLE,articleId,pageNum,pageSize);
         return  ResponseResult.okResult(data);
     }
 
