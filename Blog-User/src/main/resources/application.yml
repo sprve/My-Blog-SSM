@@ -1,5 +1,5 @@
 server:
-  port: 10000
+  port: 13000
 
 oss:
   accessKey: ??????
@@ -28,7 +28,7 @@ springdoc:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/sg_blog?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://127.0.0.1:11000/sg_blog?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -88,8 +88,8 @@ spring:
         deny:
   data:
     redis:
-      host: localhost     # Redis服务器地址
-      port: 6379          # Redis服务器连接端口
+      host: 127.0.0.1     # Redis服务器地址
+      port: 12000          # Redis服务器连接端口
       password: 123456    # Redis服务器连接密码（默认为空）
       database: 0         # Redis数据库索引（默认为0）
       timeout: 60s        # 连接空闲超过N(s秒、ms毫秒，不加单位时使用毫秒)后关闭，0为禁用，这里配置值和tcp-keepalive值一致
