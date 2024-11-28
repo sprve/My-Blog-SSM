@@ -12,7 +12,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.4</version>
+        <version>3.4.0</version>
     </parent>
 
     <modules>
@@ -27,12 +27,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <servlet.version>4.0.1</servlet.version>
-        <mybatis.plus.version>3.5.7</mybatis.plus.version>
-        <mybatis.plus.join.version>1.5.1</mybatis.plus.join.version>
+        <mybatis.plus.version>3.5.9</mybatis.plus.version>
+        <mybatis.plus.join.version>1.5.2</mybatis.plus.join.version>
         <druid.version>1.2.23</druid.version>
-        <hutool.version>5.8.32</hutool.version>
+        <hutool.version>5.8.34</hutool.version>
         <fastjson2.version>2.0.53</fastjson2.version>
-        <springdoc.version>2.6.0</springdoc.version>
+        <springdoc.version>2.7.0</springdoc.version>
         <aliyun.sdk.oss.version>3.18.1</aliyun.sdk.oss.version>
         <util.version>1.0</util.version>
     </properties>
@@ -50,6 +50,12 @@
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis.plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-jsqlparser</artifactId>
                 <version>${mybatis.plus.version}</version>
             </dependency>
 
