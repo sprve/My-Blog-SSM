@@ -1,5 +1,8 @@
 package com.sprve.runner;
 
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpUtil;
+import cn.hutool.http.Method;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -13,7 +16,7 @@ public class UpdateViewCountJob{
 
     @Scheduled(cron = "30 * * * * ?")
     public void updateViewCount(){
-        RestTemplate restTemplate =new RestTemplate();
-        restTemplate.put("http://localhost:"+port+"/article/updateViewCountList",null);
+        HttpRequest.put("http://localhost:"+port+"/article/updateViewCountList")
+                   .execute();
     }
 }
