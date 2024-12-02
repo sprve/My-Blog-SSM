@@ -45,7 +45,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         jsonObject = JwtUtil.getJSONObject(token);
         String userId=jsonObject.getStr("userId");
 
-        LoginUser loginUser = redisUtil.getCacheObject("bloglogin"+userId);
+        LoginUser loginUser = redisUtil.getCacheObject("adminlogin"+userId);
         if(ObjectUtil.isEmpty(loginUser)){
             ResponseResult result = ResponseResult.errorResult(CodeEnum.NEED_LOGIN);
             response.setStatus(200);

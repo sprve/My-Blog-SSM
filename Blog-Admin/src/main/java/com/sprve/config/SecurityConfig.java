@@ -53,13 +53,9 @@ public class SecurityConfig  {
 
                 //默认权限处理
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login").anonymous()
-                        .requestMatchers("/logout").authenticated()
+                        .requestMatchers("/user/login").anonymous()
 
-                        .requestMatchers("/comment").authenticated()
-                        .requestMatchers("/user/userInfo").authenticated()
-                        .requestMatchers("/upload").authenticated()
-                        .anyRequest().permitAll())
+                        .anyRequest().authenticated())
 
                 //自定义过滤器
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)

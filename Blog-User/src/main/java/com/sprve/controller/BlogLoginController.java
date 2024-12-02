@@ -27,6 +27,7 @@ public class BlogLoginController {
         BlogUserLoginVo data = blogLoginService.login(user);
         return ResponseResult.okResult(data);
     }
+
     @Operation(summary = "注销接口",description = "注销")
     @SystemLog(businessName = "注销")
     @PostMapping("/logout")

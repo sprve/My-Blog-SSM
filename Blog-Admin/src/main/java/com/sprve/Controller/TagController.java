@@ -1,4 +1,4 @@
-package com.sprve.Controller;
+package com.sprve.controller;
 
 import com.sprve.domain.entity.Tag;
 import com.sprve.response.ResponseResult;
