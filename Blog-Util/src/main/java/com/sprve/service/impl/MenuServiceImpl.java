@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import com.sprve.domain.entity.*;
+import com.sprve.domain.vo.MenuTreeVo;
 import com.sprve.mapper.MenuMapper;
 import com.sprve.mapper.UserMapper;
 import com.sprve.mapper.UserRoleMapper;
@@ -13,6 +14,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.sprve.domain.constants.SystemConstants.*;
@@ -97,6 +99,41 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         return menuList;
     }
 
+    @Override
+    public List<Menu> selectMenuList(Menu menu) {
+        LambdaQueryWrapper<Menu> queryWrapper = new LambdaQueryWrapper<>();
+        //menuName模糊查询
+        if(!ObjectUtil.isEmpty(menu) && !ObjectUtil.isEmpty(menu.getMenuName()))
+            queryWrapper.like(Menu::getMenuName,menu.getMenuName());
+        if(!ObjectUtil.isEmpty(menu) && !ObjectUtil.isEmpty(menu.getStatus()))
+            queryWrapper.eq(Menu::getStatus,menu.getStatus());
+        //排序 parent_id和order_num
+        queryWrapper.orderByAsc(Menu::getParentId,Menu::getOrderNum);
+        List<Menu> menus = list(queryWrapper);;
+        return menus;
+
+    }
+
+    @Override
+    public boolean hasChild(Long menuId) {
+        LambdaQueryWrapper<Menu> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Menu::getParentId,menuId);
+        return count(queryWrapper) != 0;
+    }
+
+    @Override
+    public List<Long> selectMenuListByRoleId(Long roleId) {
+        MPJLambdaWrapper<Menu> menuMPJLambdaWrapper = new MPJLambdaWrapper<>();
+        menuMPJLambdaWrapper
+                .select(Menu::getId)
+                .innerJoin(RoleMenu.class,RoleMenu::getMenuId,Menu::getId)
+                .eq(RoleMenu::getRoleId,roleId)
+                .orderByDesc(Menu::getParentId)
+                .orderByDesc(Menu::getOrderNum);
+        List<Long> dataList = getBaseMapper().selectJoinList(java.lang.Long.class,menuMPJLambdaWrapper);
+        return dataList;
+    }
+
     private List<Menu> builderMenuTree(List<Menu> menus,String root) {
         List<Menu> menuTree = menus.stream()
                 .filter(menu -> menu.getParentId().toString().equals(root))
@@ -117,5 +154,31 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
                 .map(m->m.setChildren(getChildren(m,menus)))
                 .collect(Collectors.toList());
         return childrenList;
+    }
+
+    public  List<MenuTreeVo> buildMenuSelectTree(List<Menu> menus) {
+        List<MenuTreeVo> MenuTreeVos = menus.stream()
+                .map(m -> new MenuTreeVo(m.getId(), m.getMenuName(), m.getParentId(), null))
+                .collect(Collectors.toList());
+        List<MenuTreeVo> options = MenuTreeVos.stream()
+                .filter(o -> o.getParentId().equals(0L))
+                .map(o -> o.setChildren(getChildList(MenuTreeVos, o)))
+                .collect(Collectors.toList());
+
+
+        return options;
+    }
+
+
+    /**
+     * 得到子节点列表
+     */
+    private List<MenuTreeVo> getChildList(List<MenuTreeVo> list, MenuTreeVo option) {
+        List<MenuTreeVo> options = list.stream()
+                .filter(o -> Objects.equals(o.getParentId(), option.getId()))
+                .map(o -> o.setChildren(getChildList(list, o)))
+                .collect(Collectors.toList());
+        return options;
+
     }
 }
