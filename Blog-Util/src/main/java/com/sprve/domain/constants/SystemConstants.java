@@ -48,4 +48,6 @@ public class SystemConstants {
     public static final String MENU_CAiDAN = "C";
 
     public static final String MENU_ANNUI = "F";
+
+    public static final String USER_ADMIN = "1";
 }

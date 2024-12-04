@@ -14,6 +14,7 @@ import com.sprve.service.CategoryService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +37,7 @@ public class CategoryController {
         return ResponseResult.okResult(data);
     }
 
-
+    @PreAuthorize("@ps.hasPermission('content:category:export')")
     @GetMapping("/export")
     public void export(HttpServletResponse response) throws Exception{
         categoryService.export(response);

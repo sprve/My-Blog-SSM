@@ -6,12 +6,16 @@ import com.sprve.domain.entity.LoginUser;
 import com.sprve.domain.entity.User;
 import com.sprve.exception.SystemException;
 import com.sprve.mapper.UserMapper;
+import com.sprve.service.MenuService;
 import jakarta.annotation.Resource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+import static com.sprve.domain.constants.SystemConstants.USER_ADMIN;
 import static com.sprve.response.CodeEnum.LOGIN_ERROR;
 
 @Service
@@ -20,6 +24,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Resource
     private UserMapper userMapper;
 
+    @Resource
+    private MenuService menuService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         LambdaQueryWrapper<User> userLambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -27,8 +34,10 @@ public class UserDetailServiceImpl implements UserDetailsService {
         User user =userMapper.selectOne(userLambdaQueryWrapper);
         if(ObjectUtil.isEmpty(user))
             throw new SystemException(LOGIN_ERROR);
-        LoginUser loginUser = new LoginUser();
-        loginUser.setUser(user);
-        return loginUser;
+        if(user.getType().equals(USER_ADMIN)){
+            List<String> list = menuService.selectPermsByUserId(user.getId().toString());
+            return new LoginUser(user,list);
+        }
+        return new LoginUser(user,null);
     }
 }
