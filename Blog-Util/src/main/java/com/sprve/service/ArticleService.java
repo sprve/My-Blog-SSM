@@ -2,8 +2,10 @@ package com.sprve.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sprve.domain.dto.AddArticleDto;
+import com.sprve.domain.dto.ArticleDto;
 import com.sprve.domain.entity.Article;
 import com.sprve.domain.vo.ArticleDetailVo;
+import com.sprve.domain.vo.ArticleVo;
 import com.sprve.domain.vo.HotArticleVo;
 import com.sprve.domain.vo.PageVo;
 import com.sprve.response.ResponseResult;
@@ -20,4 +22,10 @@ public interface ArticleService extends IService<Article> {
     void updateViewCountList();
 
     void add(AddArticleDto addArticleDto);
+
+    PageVo selectArticlePage(Article article, Integer pageNum, Integer pageSize);
+
+    ArticleVo getInfo(Long id);
+
+    void edit(ArticleDto article);
 }

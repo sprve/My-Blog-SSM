@@ -7,6 +7,7 @@ import cn.hutool.poi.excel.ExcelWriter;
 import com.sprve.domain.entity.Category;
 import com.sprve.domain.vo.CategoryVo;
 import com.sprve.domain.vo.ExcelCategoryVo;
+import com.sprve.domain.vo.PageVo;
 import com.sprve.exception.SystemException;
 import com.sprve.response.CodeEnum;
 import com.sprve.response.ResponseResult;
@@ -15,9 +16,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -41,5 +40,36 @@ public class CategoryController {
     @GetMapping("/export")
     public void export(HttpServletResponse response) throws Exception{
         categoryService.export(response);
+    }
+
+    @PutMapping
+    public ResponseResult edit(@RequestBody Category category){
+        categoryService.updateById(category);
+        return ResponseResult.okResult();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseResult remove(@PathVariable(value = "id")Long id){
+        categoryService.removeById(id);
+        return ResponseResult.okResult();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseResult getInfo(@PathVariable(value = "id")Long id){
+        Category category = categoryService.getById(id);
+        return ResponseResult.okResult(category);
+    }
+    @PostMapping
+    public ResponseResult add(@RequestBody Category category){
+        categoryService.save(category);
+        return ResponseResult.okResult();
+    }
+    /**
+     * 获取用户列表
+     */
+    @GetMapping("/list")
+    public ResponseResult list(Category category, Integer pageNum, Integer pageSize) {
+        PageVo pageVo = categoryService.selectCategoryPage(category,pageNum,pageSize);
+        return ResponseResult.okResult(pageVo);
     }
 }

@@ -5,11 +5,13 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sprve.domain.entity.Article;
 import com.sprve.domain.entity.Category;
 import com.sprve.domain.vo.CategoryVo;
 import com.sprve.domain.vo.ExcelCategoryVo;
+import com.sprve.domain.vo.PageVo;
 import com.sprve.exception.SystemException;
 import com.sprve.mapper.ArticleMapper;
 import com.sprve.mapper.CategoryMapper;
@@ -96,5 +98,24 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         writer.flush(outputStream, true);
         outputStream.close();
         writer.close();
+    }
+
+    @Override
+    public PageVo selectCategoryPage(Category category, Integer pageNum, Integer pageSize) {
+        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper();
+
+        if(!ObjectUtil.isEmpty(category) && !ObjectUtil.isEmpty(category.getName()))
+            queryWrapper.like(Category::getName, category.getName());
+        if(!ObjectUtil.isEmpty(category) && !ObjectUtil.isEmpty(category.getStatus()))
+            queryWrapper.eq(Category::getStatus, category.getStatus());
+
+        Page<Category> page = new Page<>(pageNum,pageSize);
+        page(page,queryWrapper);
+
+        //转换成VO
+        List<Category> categories = page.getRecords();
+
+        PageVo pageVo = new PageVo(categories,page.getTotal());
+        return pageVo;
     }
 }
