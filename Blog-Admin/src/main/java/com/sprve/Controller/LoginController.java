@@ -2,15 +2,16 @@ package com.sprve.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.sprve.domain.entity.LoginUser;
+import com.sprve.domain.entity.Menu;
 import com.sprve.domain.entity.User;
 import com.sprve.domain.vo.AdminUserInfoVo;
+import com.sprve.domain.vo.RoutersVo;
 import com.sprve.domain.vo.UserInfoVo;
 import com.sprve.response.ResponseResult;
 import com.sprve.service.LoginService;
 import com.sprve.service.MenuService;
 import com.sprve.service.RoleService;
 import com.sprve.service.UserService;
-import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.annotation.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -61,5 +62,15 @@ public class LoginController {
         BeanUtil.copyProperties(user,userInfoVo);
         AdminUserInfoVo adminUserInfoVo = new AdminUserInfoVo(perms, roles, userInfoVo);
         return ResponseResult.okResult(adminUserInfoVo);
+    }
+
+    @GetMapping("/getRouters")
+    public ResponseResult getRouters(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        LoginUser loginUser =(LoginUser)authentication.getPrincipal();
+        String userId = loginUser.getUser().getId().toString();
+        List<Menu> menuList = menuService.selectRouterMenuTree(userId);
+        RoutersVo routersVo = new RoutersVo(menuList);
+        return ResponseResult.okResult(routersVo);
     }
 }

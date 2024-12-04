@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface MenuService extends IService<Menu> {
     List<String> selectPermsByUserId(String userId);
+
+    List<Menu> selectRouterMenuTree(String userId);
 }
