@@ -23,14 +23,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/content/category")
 public class CategoryController {
-    @Resource
-    private CategoryService categoryService;
 
-    @GetMapping("/getCategoryList")
-    public ResponseResult getCategoryList(){
-        List<CategoryVo> data = categoryService.getCategoryList();
+    @Resource
+    CategoryService categoryService;
+
+    @GetMapping("listAllCategory")
+    ResponseResult listAllCategory(){
+
+        List<CategoryVo> data= categoryService.listAllCategory();
         return ResponseResult.okResult(data);
+    }
+
+
+    @GetMapping("/export")
+    public void export(HttpServletResponse response) throws Exception{
+        categoryService.export(response);
     }
 }

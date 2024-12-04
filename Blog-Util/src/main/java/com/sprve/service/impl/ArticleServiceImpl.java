@@ -7,12 +7,16 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sprve.Util.RedisUtil;
+import com.sprve.domain.dto.AddArticleDto;
 import com.sprve.domain.entity.Article;
+import com.sprve.domain.entity.ArticleTag;
 import com.sprve.domain.entity.Category;
 import com.sprve.domain.vo.*;
 import com.sprve.mapper.ArticleMapper;
 import com.sprve.mapper.CategoryMapper;
+import com.sprve.response.ResponseResult;
 import com.sprve.service.ArticleService;
+import com.sprve.service.ArticleTagService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +31,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Resource
     private CategoryMapper categoryMapper;
+
+    @Resource
+    private ArticleTagService articleTagService;
 
     @Resource
     private RedisUtil redisUtil;
@@ -107,5 +114,18 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             articleLambdaUpdateWrapper.eq(Article::getId,article.getId());
             update(articleLambdaUpdateWrapper);
         }
+    }
+
+    @Override
+    public void add(AddArticleDto addArticleDto) {
+        Article article = new Article();
+        BeanUtil.copyProperties(addArticleDto,article);
+        save(article);
+        List<ArticleTag> articleTags = addArticleDto.getTags().stream()
+                .map(tagId -> new ArticleTag(article.getId(), tagId))
+                .collect(Collectors.toList());
+
+        //添加 博客和标签的关联
+        articleTagService.saveBatch(articleTags);
     }
 }

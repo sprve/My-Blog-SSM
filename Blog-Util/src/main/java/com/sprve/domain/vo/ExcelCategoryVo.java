@@ -5,14 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class CategoryVo {
-    //Id
-    private Long id;
-    //文章分类名
+@AllArgsConstructor
+public class ExcelCategoryVo {
+
     private String name;
     //描述
+
     private String description;
 
+    //状态0:正常,1禁用
+    private String status;
 }

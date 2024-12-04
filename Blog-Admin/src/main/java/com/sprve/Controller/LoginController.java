@@ -38,7 +38,7 @@ public class LoginController {
     private UserService userService;
 
     @PostMapping("/user/login")
-    public ResponseResult login2(@RequestBody User user) {
+    public ResponseResult login(@RequestBody User user) {
         Map<String,String> data = new HashMap<>();
         data.put("token",loginService.login(user));
         return ResponseResult.okResult(data);
