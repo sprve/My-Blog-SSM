@@ -37,8 +37,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         LambdaQueryWrapper<Article> articleLambdaQueryWrapper = new LambdaQueryWrapper<>();
         articleLambdaQueryWrapper.eq(Article::getStatus,ARTICLE_STATUS_NORMAL);
         articleLambdaQueryWrapper.orderByDesc(Article::getViewCount);
+
         Page<Article> page = new Page<>(1,10);
         page(page,articleLambdaQueryWrapper);
+
         List<Article> articleList = page.getRecords();
         List<HotArticleVo> hotArticleVoList = BeanUtil.copyToList(articleList,HotArticleVo.class);
         return hotArticleVoList;
@@ -51,10 +53,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         if (ObjectUtil.isEmpty(categoryId)){
             articleLambdaQueryWrapper.eq(Article::getCategoryId,categoryId);
         }
+
         articleLambdaQueryWrapper.eq(Article::getStatus,ARTICLE_STATUS_NORMAL);
         articleLambdaQueryWrapper.orderByDesc(Article::getIsTop);
+
         Page<Article> page = new Page<>(pageNum,pageSize);
         page(page,articleLambdaQueryWrapper);
+
         List<Article> articleList = page.getRecords();
         //根据分类Id查询分类表的分类名
         for(Article article : articleList){
@@ -62,6 +67,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             categoryLambdaQueryWrapper.eq(Category::getId,article.getCategoryId());
             article.setCategoryName(categoryMapper.selectOne(categoryLambdaQueryWrapper).getName());
         }
+
         List<ArticleListVo> articleListVoList = BeanUtil.copyToList(articleList, ArticleListVo.class);
         PageVo pageVo = new PageVo(articleListVoList,page.getTotal());
         return pageVo;
@@ -69,6 +75,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     public ArticleDetailVo getArticleDetail(Long id) {
+        //根据文章Id获取文章详细信息
         Article article = getById(id);
         Integer viewCount = redisUtil.getCacheMapValue("article:viewCount", article.getId().toString());
         article.setViewCount(viewCount.longValue());

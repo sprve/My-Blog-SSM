@@ -15,7 +15,6 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Accessors(chain = true)
 @TableName("sg_article")
 public class Article implements Serializable {
     //Id

@@ -30,4 +30,22 @@ public class SystemConstants {
     public static final String COMMENT_ARTICLE = "0";
     //评论类型链接类型
     public static final String COMMENT_LINK = "1";
+
+    public static final String ROLE_STATUS_ENABLE = "0";
+
+    public static final String ROLE_STATUS_DISABLE = "1";
+
+    public static final String MENU_STATUS_ENABLE = "0";
+
+    public static final String MENU_STATUS_DISABLE = "1";
+
+    public static final String MENU_NO_VISIBLE = "0";
+
+    public static final String MENU_VISIBLE = "1";
+
+    public static final String MENU_MULU = "M";
+
+    public static final String MENU_CAiDAN = "C";
+
+    public static final String MENU_ANNUI = "F";
 }
