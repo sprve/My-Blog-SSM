@@ -59,7 +59,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public PageVo articleList(Long categoryId,Integer pageNum,Integer pageSize) {
         //根据规则分页查询文章表的数据
         LambdaQueryWrapper<Article> articleLambdaQueryWrapper = new LambdaQueryWrapper();
-        if (ObjectUtil.isEmpty(categoryId)){
+        if (!ObjectUtil.isEmpty(categoryId) && categoryId != 0){
             articleLambdaQueryWrapper.eq(Article::getCategoryId,categoryId);
         }
 

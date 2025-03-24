@@ -11,11 +11,11 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig {
 
     @Bean
-    public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory connectionFactory)
-    {
+    public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
 
+        // 使用FastJson2RedisSerializer作为值序列化器
         FastJson2RedisSerializer serializer = new FastJson2RedisSerializer(Object.class);
 
         // 使用StringRedisSerializer来序列化和反序列化redis的key值
